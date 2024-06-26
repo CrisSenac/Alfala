@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useState } from "react";
 import { getLivros } from "../../services/livros.js";
 import { useEffect } from "react";
+import { postFavoritos } from "../../services/favoritos.js";
 
 
 const PesquisaContainer = styled.section`
@@ -56,6 +57,11 @@ function Pesquisa() {
             setLivros(livroAPI)
         }
 
+        async function insertFavorito(id) {
+            await postFavoritos(id)
+            alert(`Livro de id:${id} inserido!`)
+        }
+
     return (
         <PesquisaContainer>
             <Titulo>Já sabe por onde começar?</Titulo>
@@ -70,9 +76,9 @@ function Pesquisa() {
             />
 
             {livrosPesquisados.map(livro => (
-                <Resultado>
+                <Resultado onClick={insertFavorito(livro.id)}>
                     <p>{livro.nome}</p>
-                    <img src={livro.src} />
+                    <img src={livro.src} alt="img"/>
                 </Resultado> 
             ))}
 
@@ -82,6 +88,3 @@ function Pesquisa() {
 
 
 export default Pesquisa;
-
-
-// Parei no video "como funciona estados em 1:34 quando iria começar a explicar sobre elementos de blur"
